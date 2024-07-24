@@ -10,12 +10,29 @@ let app = express();
 let cors = require('cors');
 app.use(cors({optionsSuccessStatus: 200}));  // some legacy browsers choke on 204
 
+function getTimeStamp(req, res) {
+  const date = new Date();
+  console.log(date.toString());  
+}
+
 // http://expressjs.com/en/starter/static-files.html
 app.use(express.static('public'));
 
 // http://expressjs.com/en/starter/basic-routing.html
 app.get("/", function (req, res) {
   res.sendFile(__dirname + '/views/index.html');
+});
+
+app.get("/api/:date?", function (req, res, next){
+  const unixTimestamp = Number(req.params.date);
+  console.log(typeof unixTimestamp);
+  const date = new Date(unixTimestamp);
+
+  res.json({
+    unix: `${req.params.date}`,
+    utc: `${date.toUTCString()}`
+  });
+  next();
 });
 
 
