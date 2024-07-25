@@ -18,7 +18,7 @@ function getTimeStamp(req, res) {
 // http://expressjs.com/en/starter/static-files.html
 app.use(express.static('public'));
 
-// TODO: app.use middleware for /api
+// Middleware for exposing api endpoint
 app.use('/api', function(req, res, next){
   console.log('reached API endpoint');
   next();
@@ -31,7 +31,7 @@ app.get("/", function (req, res) {
 
 app.get("/api/:date?", function (req, res, next){
   const unixTimestamp = Number(req.params.date);
-  console.log(typeof unixTimestamp);
+  
   const date = new Date(unixTimestamp);
 
   res.json({
