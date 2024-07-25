@@ -18,6 +18,12 @@ function getTimeStamp(req, res) {
 // http://expressjs.com/en/starter/static-files.html
 app.use(express.static('public'));
 
+// TODO: app.use middleware for /api
+app.use('/api', function(req, res, next){
+  console.log('reached API endpoint');
+  next();
+});
+
 // http://expressjs.com/en/starter/basic-routing.html
 app.get("/", function (req, res) {
   res.sendFile(__dirname + '/views/index.html');
