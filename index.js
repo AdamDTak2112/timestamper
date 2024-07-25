@@ -16,7 +16,7 @@ function getTimeStamp(req, res) {
 }
 
 // http://expressjs.com/en/starter/static-files.html
-app.use(express.static('public'));
+
 
 // Middleware for exposing api endpoint
 app.use('/api', function(req, res, next){
@@ -26,7 +26,7 @@ app.use('/api', function(req, res, next){
 
 // http://expressjs.com/en/starter/basic-routing.html
 app.get("/", function (req, res) {
-  res.sendFile(__dirname + '/views/index.html');
+  res.sendFile(__dirname + '/public/index.html');
 });
 
 app.get("/api/:date?", function (req, res, next){
