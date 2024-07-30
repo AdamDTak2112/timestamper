@@ -40,15 +40,13 @@ app.get("/api/:date?", function (req, res, next){
 
   
   //TODO: if in yyyy-mm-dd format, convert to readable format before submitting
-  if (otherDateRegex.test(targetDate) == true){
+  if (targetDate == null){
+    
+  } else if (otherDateRegex.test(targetDate) == true){
     console.log(typeof req.params.date);
     const date = new Date(targetDate);
     console.log("FOUND NEW ROUTE");
-    const match = tempData.match(otherDateRegex);
-    let year = match[1];
-    let month = match[2];
-    let day = match[3]
-    console.log(month + '-' + day + '-' + year);
+    
     res.json({
       unix: `${date.getTime()}`,
       utc: `${date.toUTCString()}, `
