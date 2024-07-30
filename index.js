@@ -8,19 +8,13 @@ let app = express();
 // enable CORS (https://en.wikipedia.org/wiki/Cross-origin_resource_sharing)
 // so that your API is remotely testable by FCC 
 let cors = require('cors');
-app.use(cors({optionsSuccessStatus: 200}));  // some legacy browsers choke on 204
-
-function getTimeStamp(req, res) {
-  const date = new Date();
-  console.log(date.toString());  
-}
+app.use(cors({optionsSuccessStatus: 200}));  // some legacy browsers choke on 204W
 
 // http://expressjs.com/en/starter/static-files.html
 app.use(express.static('public'));
 
 // Middleware for exposing api endpoint
 app.use('/api', function(req, res, next){
-  console.log('reached API endpoint');
   next();
 });
 
@@ -30,16 +24,40 @@ app.get("/", function (req, res) {
 });
 
 app.get("/api/:date?", function (req, res, next){
-  const targetDate = req.params.date;
+  let targetDate = req.params.date;
   const otherDateRegex = /^(\d{4})-(\d{2})-(\d{2})$/;
- 
+  const unixRegex = /^\d+$/;
+  let unix;
+  let utc;
+  if (unixRegex.test(targetDate) == true){
+    targetDate = Number(targetDate);
+  }
 
+  const date = targetDate == null 
+    ? new Date()
+    : new Date(targetDate);
 
-
+  if (isNaN(date)){
+    console.log(Number(targetDate));
+    res.json({
+      error: 'Invalid Date'
+    });
+    //Check for unix time stamp before throwing error..
+  } else {
+    console.log(date);
+    unix = date.getTime();
+    utc = date.toUTCString();
+    res.json({
+      unix: `${unix}`,
+      utc: `${utc}`
+    });
+  }
 
   
   //TODO: if in yyyy-mm-dd format, convert to readable format before submitting
-  if (targetDate == null){
+  /*if (targetDate == null){
+    const dummyDate = new Date('boacowejowrjwoeifjwifjoewjoijf');
+    console.log(dummyDate);
     const date = new Date();
     res.json({
       unix: `${date.getTime()}`,
@@ -61,7 +79,7 @@ app.get("/api/:date?", function (req, res, next){
       unix: `${date.getTime()}`,
       utc: `${date.toUTCString()}`
     });
-  }
+  }*/
   next();
 });
 
