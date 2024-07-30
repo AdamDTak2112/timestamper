@@ -30,7 +30,6 @@ app.get("/", function (req, res) {
 });
 
 app.get("/api/:date?", function (req, res, next){
-  const tempData = '2025-12-25';
   const targetDate = req.params.date;
   const otherDateRegex = /^(\d{4})-(\d{2})-(\d{2})$/;
  
@@ -41,7 +40,11 @@ app.get("/api/:date?", function (req, res, next){
   
   //TODO: if in yyyy-mm-dd format, convert to readable format before submitting
   if (targetDate == null){
-    
+    const date = new Date();
+    res.json({
+      unix: `${date.getTime()}`,
+      utc: `${date.toUTCString()}`
+    });
   } else if (otherDateRegex.test(targetDate) == true){
     console.log(typeof req.params.date);
     const date = new Date(targetDate);
