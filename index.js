@@ -16,7 +16,7 @@ function getTimeStamp(req, res) {
 }
 
 // http://expressjs.com/en/starter/static-files.html
-
+app.use(express.static('public'));
 
 // Middleware for exposing api endpoint
 app.use('/api', function(req, res, next){
@@ -30,14 +30,37 @@ app.get("/", function (req, res) {
 });
 
 app.get("/api/:date?", function (req, res, next){
-  const unixTimestamp = Number(req.params.date);
-  
-  const date = new Date(unixTimestamp);
+  const tempData = '2025-12-25';
+  const targetDate = req.params.date;
+  const otherDateRegex = /^(\d{4})-(\d{2})-(\d{2})$/;
+ 
 
-  res.json({
-    unix: `${req.params.date}`,
-    utc: `${date.toUTCString()}`
-  });
+
+
+
+  
+  //TODO: if in yyyy-mm-dd format, convert to readable format before submitting
+  if (otherDateRegex.test(targetDate) == true){
+    console.log(typeof req.params.date);
+    const date = new Date(targetDate);
+    console.log("FOUND NEW ROUTE");
+    const match = tempData.match(otherDateRegex);
+    let year = match[1];
+    let month = match[2];
+    let day = match[3]
+    console.log(month + '-' + day + '-' + year);
+    res.json({
+      unix: `${date.getTime()}`,
+      utc: `${date.toUTCString()}, `
+    });
+  } else {
+    const unixTimestamp = Number(req.params.date);
+    const date = new Date(unixTimestamp);
+    res.json({
+      unix: `${date.getTime()}`,
+      utc: `${date.toUTCString()}`
+    });
+  }
   next();
 });
 
