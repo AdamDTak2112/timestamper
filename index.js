@@ -38,17 +38,16 @@ app.get("/api/:date?", function (req, res, next){
     : new Date(targetDate);
 
   if (isNaN(date)){
-    console.log(Number(targetDate));
+    console.log("REACHED BAD PLACE");
     res.json({
       error: 'Invalid Date'
     });
-    //Check for unix time stamp before throwing error..
   } else {
     console.log(date);
     unix = date.getTime();
     utc = date.toUTCString();
     res.json({
-      unix: `${unix}`,
+      unix: unix,
       utc: `${utc}`
     });
   }
@@ -80,7 +79,6 @@ app.get("/api/:date?", function (req, res, next){
       utc: `${date.toUTCString()}`
     });
   }*/
-  next();
 });
 
 
