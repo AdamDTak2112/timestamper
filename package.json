@@ -1,7 +1,7 @@
 {
   "name": "fcc-api-projects-boilerplate",
   "version": "0.0.1",
-  "description": "An FCC Backend Challenge",
+  "description": "Timestamp microservice as implemented by Adam Tak from the freeCodeCamp back-end certification projects",
   "main": "index.js",
   "scripts": {
     "start": "node index.js"
